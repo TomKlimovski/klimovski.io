@@ -1,6 +1,12 @@
 # .github/workflows/netlify.yml
 name: Build and Deploy to Netlify
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "dev"
   push:
 jobs:
   build:
