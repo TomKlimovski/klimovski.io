@@ -66,10 +66,10 @@ function TitleBar() {
                 <CloseButton onClick={closeWindow}>X</CloseButton>
             </ButtonsDiv>
             <TitleDiv>
-                <a href='https://github.com/TomKlimovski/klimovski.io'>klimovski.io</a>
+                <a href='https://klimovski.io'>klimovski.io</a>
             </TitleDiv>
             <LinksDiv>
-                <a href="ttps://github.com/TomKlimovski">
+                <a href="https://github.com/TomKlimovski">
                     <FontAwesomeIcon icon={faGithub}/>
                 </a>
                 <a href="https://twitter.com/tommoFitz">
