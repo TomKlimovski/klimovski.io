@@ -69,7 +69,7 @@ function TitleBar() {
                 <a href='https://github.com/TomKlimovski'>klimovski.io</a>
             </TitleDiv>
             <LinksDiv>
-                <a href="ttps://github.com/TomKlimovski/klimovski.io">
+                <a href="https://github.com/TomKlimovski/klimovski.io">
                     <FontAwesomeIcon icon={faGithub}/>
                 </a>
                 <a href="https://twitter.com/tommoFitz">
