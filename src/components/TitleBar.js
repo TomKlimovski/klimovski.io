@@ -66,7 +66,7 @@ function TitleBar() {
                 <CloseButton onClick={closeWindow}>X</CloseButton>
             </ButtonsDiv>
             <TitleDiv>
-                <a href='https://github.com/TomKlimovski'>klimovski.io</a>
+                <a href="https://github.com/TomKlimovski">klimovski.io</a>
             </TitleDiv>
             <LinksDiv>
                 <a href="https://github.com/TomKlimovski/klimovski.io">
@@ -78,7 +78,7 @@ function TitleBar() {
                 <a href="https://www.linkedin.com/in/tomklimovski/">
                     <FontAwesomeIcon icon={faLinkedin}/>
                 </a>
-                <a href="mailto:tom.klimovski@gammadata.io">
+                <a href="mailto:tom.klimovski@gmail.com">
                     <FontAwesomeIcon icon={faEnvelope}/>
                 </a>
             </LinksDiv>
