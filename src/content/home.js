@@ -14,6 +14,7 @@ export const files = {
             "My side projects include",
             "✊ epicarc.io",
             "✊ skicounselling.com",
+            "✊ sleeplikegoldilocks.com",
             "",
             "-----",
             "I am a specialist GCP consultant with a 15-year history in IT, having worked across multiple, enterprise scale GCP implementations ",
