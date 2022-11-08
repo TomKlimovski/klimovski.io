@@ -41,7 +41,7 @@ export const files = {
             "🤔 I’m looking for help with becoming a Contributor on an Open Source project",
             "💬 Ask me about Delivering Technical Projects",
             "   Read my blog here: https://medium.com/@tom.klimovski",
-            "      And here: https://medium.com/@tom.klimovski_90944
+            "      And here: https://medium.com/@tom.klimovski_90944",
             "------",
         ],
         type: fileType.regular,
