@@ -4,6 +4,7 @@ import NeofetchOutput from '../../components/output/NeofetchOutput';
 import { fileType } from '../utils';
 import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
+import { TECTONIQ_SESSION } from '../shell/ShellContext';
 import Boot from '../../components/programs/Boot';
 import Vim from '../../components/programs/Vim';
 import Cmatrix from '../../components/programs/Cmatrix';
@@ -146,6 +147,27 @@ const cmatrix = () => ({ program: { Component: Cmatrix } });
 
 const snake = () => ({ program: { Component: Snake } });
 
+const TECTONIQ_TARGETS = ['tiq@tectoniq.com.au', 'tectoniq', 'tectoniq.com.au'];
+
+const ssh = (args, shell) => {
+    if (!args || args.length === 0) {
+        return txt(['usage: ssh tiq@tectoniq.com.au']);
+    }
+    const target = args[0].toLowerCase();
+    if (TECTONIQ_TARGETS.includes(target)) {
+        if (shell.sessions.length > 1) {
+            return txt(["ssh: already connected. 'exit' first."]);
+        }
+        shell.pushSession(TECTONIQ_SESSION);
+        return txt([
+            'Connecting to tectoniq.com.au ... connected.',
+            'Welcome to TIQ — unified talent intelligence.',
+            "Type 'ls' to look around, 'exit' to disconnect.",
+        ]);
+    }
+    return txt([`ssh: connect to host ${target}: Connection refused`]);
+};
+
 const rm = (args) => {
     const flags = args.filter((a) => a.startsWith('-')).join('');
     const targets = args.filter((a) => !a.startsWith('-'));
@@ -189,6 +211,7 @@ const actions = {
     'cmatrix': cmatrix,
     'snake': snake,
     'rm': rm,
+    'ssh': ssh,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];
