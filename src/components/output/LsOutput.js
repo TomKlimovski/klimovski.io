@@ -46,7 +46,7 @@ export default function LsOutput({files, longOption}){
                     <div key={index}>
                         <LsItemDiv itemType={file.type}>
                             {longOption ? <PermsInfoDiv>{file.longView}</PermsInfoDiv> : null}
-                            {file.name}
+                            {file.name}{file.type === fileType.dir ? '/' : ''}
                         </LsItemDiv>
                     </div>
                 )

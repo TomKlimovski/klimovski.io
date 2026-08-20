@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NODE_OPTIONS=--openssl-legacy-provider BROWSER=none yarn start"],
+      "port": 3000
+    }
+  ]
+}

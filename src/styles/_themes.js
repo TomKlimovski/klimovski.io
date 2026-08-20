@@ -8,3 +8,19 @@ export const darkMode = {
         opal: '#c6d8d3',
     }
 }
+
+export const tectoniqMode = {
+    colors: {
+        backgroundColor: '#0b1220',
+        white: '#e8f1ff',
+        fireOpal: '#4fb3ff',
+        ruby: '#39d0c3',
+        papayaWhip: '#ffd166',
+        opal: '#7f9cc0',
+    }
+}
+
+export const themes = {
+    dark: darkMode,
+    tectoniq: tectoniqMode,
+}
