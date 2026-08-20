@@ -1,7 +1,9 @@
 import TxtOutput from '../../components/output/TxtOutput';
 import LsOutput from '../../components/output/LsOutput';
+import NeofetchOutput from '../../components/output/NeofetchOutput';
 import { fileType } from '../utils';
 import { resolvePath, getNode, formatPath } from './fsUtils';
+import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
 
 const txt = (lines) => <TxtOutput lines={lines} />;
 const needsArg = (cmd) => txt([`'${cmd}' needs an argument.`]);
@@ -99,6 +101,49 @@ const help = () => txt([
     "...the rest you'll have to discover yourself.",
 ]);
 
+const sudo = (args) => {
+    if (!args || args.length === 0) {
+        return txt(['usage: sudo <command>']);
+    }
+    if (args.join(' ').toLowerCase() === 'make me a sandwich') {
+        return txt(['Okay.']);
+    }
+    return txt(['guest is not in the sudoers file.', 'This incident will be reported.']);
+};
+
+const fortune = () =>
+    txt([FORTUNES[Math.floor(Math.random() * FORTUNES.length)]]);
+
+const git = (args) => {
+    const sub = args[0];
+    if (sub === 'log') return txt(CAREER_LOG);
+    if (sub === 'status') {
+        return txt(['HEAD detached at a beach somewhere', 'nothing to commit, working life clean']);
+    }
+    if (sub === 'push') return txt(['Everything up-to-date (life)']);
+    return txt(["git: try 'git log'"]);
+};
+
+const exitCmd = (args, shell) => {
+    if (shell.sessions.length > 1) {
+        const host = shell.sessions[shell.sessions.length - 1].host;
+        shell.popSession();
+        return txt([`Connection to ${host} closed.`]);
+    }
+    return txt(['There is no escape.', "(If you're feeling brave, try 'rm -rf /'.)"]);
+};
+
+const neofetch = (args, shell) => {
+    const user = shell.sessions[shell.sessions.length - 1].user;
+    return (
+        <NeofetchOutput
+            art={NEOFETCH_ART}
+            info={NEOFETCH_INFO}
+            title={`${user}@klimovski.io`}
+        />
+    );
+};
+
 const actions = {
     'ls': ls,
     'cd': cd,
@@ -108,6 +153,11 @@ const actions = {
     'whoami': whoami,
     'history': historyCmd,
     'help': help,
+    'sudo': sudo,
+    'fortune': fortune,
+    'git': git,
+    'exit': exitCmd,
+    'neofetch': neofetch,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear', 'reboot'];
