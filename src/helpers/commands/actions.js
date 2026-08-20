@@ -6,6 +6,8 @@ import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
 import Boot from '../../components/programs/Boot';
 import Vim from '../../components/programs/Vim';
+import Cmatrix from '../../components/programs/Cmatrix';
+import Snake from '../../components/programs/Snake';
 
 const txt = (lines) => <TxtOutput lines={lines} />;
 const needsArg = (cmd) => txt([`'${cmd}' needs an argument.`]);
@@ -139,6 +141,10 @@ const reboot = () => ({ program: { Component: Boot, andThen: 'clear' } });
 
 const vim = () => ({ program: { Component: Vim } });
 
+const cmatrix = () => ({ program: { Component: Cmatrix } });
+
+const snake = () => ({ program: { Component: Snake } });
+
 const neofetch = (args, shell) => {
     const user = shell.sessions[shell.sessions.length - 1].user;
     return (
@@ -167,6 +173,8 @@ const actions = {
     'reboot': reboot,
     'vim': vim,
     'vi': vim,
+    'cmatrix': cmatrix,
+    'snake': snake,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];
