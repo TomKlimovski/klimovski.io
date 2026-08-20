@@ -4,6 +4,7 @@ import NeofetchOutput from '../../components/output/NeofetchOutput';
 import { fileType } from '../utils';
 import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
+import Boot from '../../components/programs/Boot';
 
 const txt = (lines) => <TxtOutput lines={lines} />;
 const needsArg = (cmd) => txt([`'${cmd}' needs an argument.`]);
@@ -133,6 +134,8 @@ const exitCmd = (args, shell) => {
     return txt(['There is no escape.', "(If you're feeling brave, try 'rm -rf /'.)"]);
 };
 
+const reboot = () => ({ program: { Component: Boot, andThen: 'clear' } });
+
 const neofetch = (args, shell) => {
     const user = shell.sessions[shell.sessions.length - 1].user;
     return (
@@ -158,8 +161,9 @@ const actions = {
     'git': git,
     'exit': exitCmd,
     'neofetch': neofetch,
+    'reboot': reboot,
 };
 
-export const COMMAND_NAMES = [...Object.keys(actions), 'clear', 'reboot'];
+export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];
 
 export default actions;

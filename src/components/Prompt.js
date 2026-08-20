@@ -7,6 +7,7 @@ import actions from '../helpers/commands/actions';
 import { genUuid } from '../helpers/utils';
 import { formatPath } from '../helpers/commands/fsUtils';
 import { useShell } from '../helpers/shell/ShellContext';
+import Boot from './programs/Boot';
 
 const UserHostDiv = styled.div`
     color: ${(props) => props.theme.colors.ruby};
@@ -69,6 +70,10 @@ function Prompt({ user, host, dir, setClear, setRenderNext }) {
                 name: prog.Component.name,
                 Component: prog.Component,
                 onExit: (farewell) => {
+                    if (prog.andThen === 'reboot') {
+                        runProgram({ Component: Boot, andThen: 'clear' });
+                        return;
+                    }
                     if (farewell) setOutput(farewell);
                     if (prog.andThen === 'clear') setClear(true);
                     setRenderNext(true);
