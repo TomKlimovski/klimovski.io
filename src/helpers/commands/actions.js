@@ -8,6 +8,7 @@ import Boot from '../../components/programs/Boot';
 import Vim from '../../components/programs/Vim';
 import Cmatrix from '../../components/programs/Cmatrix';
 import Snake from '../../components/programs/Snake';
+import Meltdown from '../../components/programs/Meltdown';
 
 const txt = (lines) => <TxtOutput lines={lines} />;
 const needsArg = (cmd) => txt([`'${cmd}' needs an argument.`]);
@@ -145,6 +146,18 @@ const cmatrix = () => ({ program: { Component: Cmatrix } });
 
 const snake = () => ({ program: { Component: Snake } });
 
+const rm = (args) => {
+    const flags = args.filter((a) => a.startsWith('-')).join('');
+    const targets = args.filter((a) => !a.startsWith('-'));
+    const recursive = flags.includes('r') && flags.includes('f');
+    const nuking = targets.some((t) => t === '/' || t === '~' || t === '*' || t === '/*');
+    if (recursive && nuking) {
+        return { program: { Component: Meltdown, andThen: 'reboot' } };
+    }
+    if (args.length === 0) return txt(['usage: rm [-rf] <target>']);
+    return txt([`rm: cannot remove '${targets[0] || args[0]}': Permission denied (nice try)`]);
+};
+
 const neofetch = (args, shell) => {
     const user = shell.sessions[shell.sessions.length - 1].user;
     return (
@@ -175,6 +188,7 @@ const actions = {
     'vi': vim,
     'cmatrix': cmatrix,
     'snake': snake,
+    'rm': rm,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];
