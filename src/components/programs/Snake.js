@@ -40,10 +40,13 @@ export default function Snake({ exit }) {
         let points = 0;
         let alive = true;
 
+        const randCell = () =>
+            ({ x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) });
+        const occupied = (p) => snake.some((s) => s.x === p.x && s.y === p.y);
         const placeFood = () => {
-            do {
-                food = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
-            } while (snake.some((s) => s.x === food.x && s.y === food.y));
+            let candidate = randCell();
+            while (occupied(candidate)) candidate = randCell();
+            food = candidate;
         };
 
         const gameOver = () => {

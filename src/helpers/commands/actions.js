@@ -147,6 +147,12 @@ const cmatrix = () => ({ program: { Component: Cmatrix } });
 
 const snake = () => ({ program: { Component: Snake } });
 
+const crt = (args, shell) => {
+    const on = !shell.crt;
+    shell.setCrt(on);
+    return txt([on ? 'crt: on — welcome to 1987' : 'crt: off — back to the future']);
+};
+
 const TECTONIQ_TARGETS = ['tiq@tectoniq.com.au', 'tectoniq', 'tectoniq.com.au'];
 
 const ssh = (args, shell) => {
@@ -212,6 +218,7 @@ const actions = {
     'snake': snake,
     'rm': rm,
     'ssh': ssh,
+    'crt': crt,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];

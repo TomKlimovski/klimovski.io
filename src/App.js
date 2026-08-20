@@ -8,6 +8,7 @@ import TitleBar from './components/TitleBar';
 import Clock from './components/Clock';
 import Prompts from './components/Prompt';
 import Boot from './components/programs/Boot';
+import CrtOverlay from './components/CrtOverlay';
 import { ShellProvider, useShell } from './helpers/shell/ShellContext';
 
 function ThemedShell() {
@@ -41,6 +42,7 @@ function ThemedShell() {
             <Clock />
             <Prompts />
             {Program ? <Program exit={handleProgramExit} /> : null}
+            {state.crt ? <CrtOverlay /> : null}
         </ThemeProvider>
     );
 }
