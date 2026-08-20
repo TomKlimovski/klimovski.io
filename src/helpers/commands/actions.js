@@ -5,6 +5,7 @@ import { fileType } from '../utils';
 import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
 import Boot from '../../components/programs/Boot';
+import Vim from '../../components/programs/Vim';
 
 const txt = (lines) => <TxtOutput lines={lines} />;
 const needsArg = (cmd) => txt([`'${cmd}' needs an argument.`]);
@@ -136,6 +137,8 @@ const exitCmd = (args, shell) => {
 
 const reboot = () => ({ program: { Component: Boot, andThen: 'clear' } });
 
+const vim = () => ({ program: { Component: Vim } });
+
 const neofetch = (args, shell) => {
     const user = shell.sessions[shell.sessions.length - 1].user;
     return (
@@ -162,6 +165,8 @@ const actions = {
     'exit': exitCmd,
     'neofetch': neofetch,
     'reboot': reboot,
+    'vim': vim,
+    'vi': vim,
 };
 
 export const COMMAND_NAMES = [...Object.keys(actions), 'clear'];
