@@ -5,7 +5,9 @@ const commonPrefix = (names) =>
         return a.slice(0, i);
     });
 
-export const complete = (line, commandNames, entryNames) => {
+// commandArgFor: commands whose argument is itself a command name (man, sudo),
+// so their argument completes against commandNames instead of cwd entries.
+export const complete = (line, commandNames, entryNames, commandArgFor = []) => {
     if (!line) return null;
     const endsWithSpace = /\s$/.test(line);
     if (endsWithSpace) return null;
@@ -14,7 +16,8 @@ export const complete = (line, commandNames, entryNames) => {
     if (!token || token.includes('/')) return null;
 
     const isCommand = parts.length === 1;
-    const pool = isCommand
+    const wantsCommand = isCommand || commandArgFor.includes(parts[0].toLowerCase());
+    const pool = wantsCommand
         ? commandNames
         : entryNames.filter((n) => (token.startsWith('.') ? true : !n.startsWith('.')));
     const matches = pool.filter((n) => n.startsWith(token));

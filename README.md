@@ -4,9 +4,10 @@ Personal website as a shell.
 
 ## Commands
 
-`help` lists the polite ones. The rest — `neofetch`, `fortune`, `git log`,
-`sudo`, `vim`, `snake`, `cmatrix`, `crt`, `reboot`, `ssh tiq@tectoniq.com.au`,
-and one you really shouldn't run — you'll have to find yourself.
+`help` lists the polite ones. `man klimovski` is the full manual: a guided tour,
+every command, and `man <command>` for any of them. Or skip the manual and find
+`neofetch`, `fortune`, `git log`, `sudo`, `vim`, `snake`, `cmatrix`, `crt`,
+`reboot`, `ssh tiq@tectoniq.com.au`, and one you really shouldn't run, yourself.
 
 ## Development
 

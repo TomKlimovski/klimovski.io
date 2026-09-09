@@ -1,10 +1,12 @@
 import TxtOutput from '../../components/output/TxtOutput';
 import LsOutput from '../../components/output/LsOutput';
 import NeofetchOutput from '../../components/output/NeofetchOutput';
+import ManOutput from '../../components/output/ManOutput';
 import { fileType } from '../utils';
 import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
 import { TECTONIQ_SESSION } from '../shell/ShellContext';
+import { getManPage } from '../../content/man';
 import Boot from '../../components/programs/Boot';
 import Vim from '../../components/programs/Vim';
 import Cmatrix from '../../components/programs/Cmatrix';
@@ -105,7 +107,16 @@ const help = () => txt([
     'history · whoami · clear: housekeeping',
     'tab completes · arrows recall history',
     "...the rest you'll have to discover yourself.",
+    "lost? 'man klimovski' has the whole tour.",
 ]);
+
+const man = (args) => {
+    const page = getManPage(args[0]);
+    if (!page) {
+        return txt([`No manual entry for ${args[0]}`, "Try 'man klimovski'."]);
+    }
+    return <ManOutput page={page} />;
+};
 
 const sudo = (args) => {
     if (!args || args.length === 0) {
@@ -206,6 +217,7 @@ const actions = {
     'whoami': whoami,
     'history': historyCmd,
     'help': help,
+    'man': man,
     'sudo': sudo,
     'fortune': fortune,
     'git': git,

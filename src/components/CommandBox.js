@@ -8,6 +8,9 @@ import { getNode } from '../helpers/commands/fsUtils';
 import { COMMAND_NAMES } from '../helpers/commands/actions';
 import { useShell } from '../helpers/shell/ShellContext';
 
+// commands whose argument is another command name
+const COMMAND_ARG_COMMANDS = ['man', 'sudo'];
+
 const CommandInput = styled.input`
     flex: 1;
     border: none;
@@ -53,7 +56,7 @@ function CommandBox({ setCmd }) {
             e.preventDefault();
             const cwdNode = getNode(fsRoot, active.cwd);
             const entries = cwdNode && cwdNode.children ? Object.keys(cwdNode.children) : [];
-            const completed = complete(commandValue, COMMAND_NAMES, entries);
+            const completed = complete(commandValue, COMMAND_NAMES, entries, COMMAND_ARG_COMMANDS);
             if (completed) setCommandValue(completed);
             return;
         }

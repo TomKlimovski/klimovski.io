@@ -31,3 +31,13 @@ test('returns null when no match, empty token, or slash in token', () => {
     expect(complete('cat projects/e', CMDS, ENTRIES)).toBeNull();
     expect(complete('', CMDS, ENTRIES)).toBeNull();
 });
+
+test('commandArgFor commands complete command names as their argument', () => {
+    const cmds = [...CMDS, 'man', 'snake', 'sudo'];
+    expect(complete('man sn', cmds, ENTRIES, ['man'])).toBe('man snake');
+    expect(complete('sudo sn', cmds, ENTRIES, ['man', 'sudo'])).toBe('sudo snake');
+    // without opting in, the argument still completes against fs entries
+    expect(complete('man sn', cmds, ENTRIES)).toBeNull();
+    // fs entries never leak into a command-arg completion
+    expect(complete('man ab', cmds, ENTRIES, ['man'])).toBeNull();
+});
