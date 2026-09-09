@@ -3,11 +3,14 @@ import { useState, useEffect } from 'react';
 
 import { regularLightTextStyle, regularTextStyle } from '../styles/_typographies';
 import CommandBox from './CommandBox';
+import TxtOutput from './output/TxtOutput';
 import actions from '../helpers/commands/actions';
 import { genUuid } from '../helpers/utils';
 import { formatPath } from '../helpers/commands/fsUtils';
 import { useShell } from '../helpers/shell/ShellContext';
 import Boot from './programs/Boot';
+import { homeMotd, pickFrom, takeLastLogin } from '../content/motd';
+import { storage } from '../helpers/storage';
 
 const UserHostDiv = styled.div`
     color: ${(props) => props.theme.colors.ruby};
@@ -44,7 +47,7 @@ const PromptsContainer = styled.div`
     justify-content: left;
 `;
 
-function Prompt({ user, host, dir, setClear, setRenderNext }) {
+function Prompt({ user, host, dir, motd, setClear, setLogin, setRenderNext }) {
     const [cmd, setCmd] = useState({});
     const [output, setOutput] = useState();
     const shellCtx = useShell();
@@ -71,11 +74,12 @@ function Prompt({ user, host, dir, setClear, setRenderNext }) {
                 Component: prog.Component,
                 onExit: (farewell) => {
                     if (prog.andThen === 'reboot') {
-                        runProgram({ Component: Boot, andThen: 'clear' });
+                        runProgram({ Component: Boot, andThen: 'login' });
                         return;
                     }
                     if (farewell) setOutput(farewell);
                     if (prog.andThen === 'clear') setClear(true);
+                    if (prog.andThen === 'login') { setLogin(true); setClear(true); }
                     setRenderNext(true);
                 },
             });
@@ -106,6 +110,7 @@ function Prompt({ user, host, dir, setClear, setRenderNext }) {
 
     return (
         <>
+        {motd ? <TxtOutput lines={motd} /> : null}
         <PromptDiv>
             <UserHostDiv>{user}@{host}</UserHostDiv>
             <DirDiv>{dir}</DirDiv>
@@ -119,23 +124,29 @@ function Prompt({ user, host, dir, setClear, setRenderNext }) {
     );
 }
 
+// A "login" (page load, reboot) prints the message of the day above the prompt.
+const loginMotd = () => homeMotd(takeLastLogin(storage), pickFrom());
+
 function Prompts() {
     const [renderNext, setRenderNext] = useState(false);
     const [clear, setClear] = useState(false);
+    const [login, setLogin] = useState(false);
     const { active } = useShell();
 
-    const nextPrompt = () => ({
+    const nextPrompt = (withMotd) => ({
         key: genUuid(),
         user: active.user,
         host: active.host,
         dir: formatPath(active.cwd),
+        motd: withMotd ? loginMotd() : null,
     });
 
-    const [prompts, setPrompts] = useState([{
+    const [prompts, setPrompts] = useState(() => [{
         key: 'first',
         user: 'guest',
         host: 'internet',
         dir: '~',
+        motd: loginMotd(),
     }]);
 
     useEffect(() => {
@@ -143,10 +154,11 @@ function Prompts() {
             setRenderNext(false);
             if (clear) {
                 setClear(false);
-                setPrompts([nextPrompt()]);
+                setLogin(false);
+                setPrompts([nextPrompt(login)]);
                 return;
             }
-            setPrompts((prev) => prev.concat(nextPrompt()));
+            setPrompts((prev) => prev.concat(nextPrompt(false)));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [renderNext]);
@@ -159,7 +171,9 @@ function Prompts() {
                     user={prompt.user}
                     host={prompt.host}
                     dir={prompt.dir}
+                    motd={prompt.motd}
                     setClear={setClear}
+                    setLogin={setLogin}
                     setRenderNext={setRenderNext}
                 />
             ))}

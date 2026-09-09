@@ -58,6 +58,25 @@ null); every `COMMAND_NAMES` entry has a man entry; every `TOUR` command is a
 known command or home-fs executable; completion `commandArgFor` behaviour.
 Visual rendering verified manually in the browser.
 
+### Message of the day
+
+A first-timer landing on a bare prompt has no cue that `help` exists, so a
+"login" prints two lines above the prompt, like a real shell:
+
+```
+Last login: Wed Sep  9 19:01:11 2026 from sietch-tabr.arrakis
+Welcome to klimovski.io. Type 'help' to start, or 'man klimovski' for the tour.
+```
+
+- The time is the previous visit (`localStorage: klimovski.lastLogin`), or now
+  on a first visit. The `from` host rotates through a pool of sci-fi places
+  (Neuromancer, Dune, Hitchhiker's, Blade Runner, Alien, The Expanse, …).
+- Logins: page load, and `reboot` (which now uses `andThen: 'login'`: clear the
+  screen, then print the motd). Plain `clear` wipes it, as in a real shell.
+- The `ssh` banner gains its own `Last login … from` line from the same pool.
+- Content and formatting are pure (`src/content/motd.js`); `localStorage`
+  access moves to a shared guarded helper (`src/helpers/storage.js`).
+
 ## Cut (YAGNI)
 
 A `less`-style pager, `man -k` search, `apropos`, `whatis`, an interactive

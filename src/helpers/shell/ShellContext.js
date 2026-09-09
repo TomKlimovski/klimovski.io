@@ -2,6 +2,7 @@ import { createContext, useContext, useReducer, useMemo } from 'react';
 import { shellReducer, initShellState } from './shellReducer';
 import { homeFs } from '../../content/fs';
 import { tectoniqFs } from '../../content/tectoniq';
+import { storage } from '../storage';
 
 export const TECTONIQ_SESSION = {
     user: 'tiq',
@@ -14,15 +15,6 @@ export const TECTONIQ_SESSION = {
 const FS_ROOTS = {
     home: homeFs,
     tectoniq: tectoniqFs,
-};
-
-const storage = {
-    get(key) {
-        try { return window.localStorage.getItem(key); } catch (e) { return null; }
-    },
-    set(key, value) {
-        try { window.localStorage.setItem(key, value); } catch (e) { /* private browsing */ }
-    },
 };
 
 const ShellContext = createContext(null);

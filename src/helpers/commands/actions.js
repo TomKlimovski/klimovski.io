@@ -7,6 +7,7 @@ import { resolvePath, getNode, formatPath } from './fsUtils';
 import { FORTUNES, CAREER_LOG, NEOFETCH_ART, NEOFETCH_INFO } from '../../content/eggs';
 import { TECTONIQ_SESSION } from '../shell/ShellContext';
 import { getManPage } from '../../content/man';
+import { lastLoginLine, pickFrom } from '../../content/motd';
 import Boot from '../../components/programs/Boot';
 import Vim from '../../components/programs/Vim';
 import Cmatrix from '../../components/programs/Cmatrix';
@@ -150,7 +151,7 @@ const exitCmd = (args, shell) => {
     return txt(['There is no escape.', "(If you're feeling brave, try 'rm -rf /'.)"]);
 };
 
-const reboot = () => ({ program: { Component: Boot, andThen: 'clear' } });
+const reboot = () => ({ program: { Component: Boot, andThen: 'login' } });
 
 const vim = () => ({ program: { Component: Vim } });
 
@@ -178,6 +179,7 @@ const ssh = (args, shell) => {
         shell.pushSession(TECTONIQ_SESSION);
         return txt([
             'Connecting to tectoniq.com.au ... connected.',
+            lastLoginLine(new Date(), pickFrom()),
             'Welcome to TIQ — unified talent intelligence.',
             "Type 'ls' to look around, 'exit' to disconnect.",
         ]);
